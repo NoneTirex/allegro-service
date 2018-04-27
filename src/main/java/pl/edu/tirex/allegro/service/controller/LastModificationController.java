@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.edu.tirex.allegro.service.service.GithubService;
 
 @RestController
-public class GithubController
+public class LastModificationController
 {
     private final GithubService githubService;
 
     @Autowired
-    public GithubController(GithubService githubService)
+    public LastModificationController(GithubService githubService)
     {
         this.githubService = githubService;
     }

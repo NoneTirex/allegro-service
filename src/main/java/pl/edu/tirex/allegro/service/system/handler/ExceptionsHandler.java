@@ -1,5 +1,6 @@
 package pl.edu.tirex.allegro.service.system.handler;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,5 +20,11 @@ public class ExceptionsHandler
     public ResponseEntity repositoryNotFoundException()
     {
         return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity otherException()
+    {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 }
