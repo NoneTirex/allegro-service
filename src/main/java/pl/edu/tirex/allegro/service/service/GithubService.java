@@ -72,6 +72,4 @@ public class GithubService
         }
         return Collections.emptyList();
     }
-
-
 }
