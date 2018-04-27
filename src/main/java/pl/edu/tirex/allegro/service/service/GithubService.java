@@ -65,6 +65,7 @@ public class GithubService
             {
                 throw new GithubUserNotFoundException("User with name: " + user + " was not found.");
             }
+            throw e;
         }
         catch (IOException e)
         {

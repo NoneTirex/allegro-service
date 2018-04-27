@@ -4,27 +4,36 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import pl.edu.tirex.github.exception.GithubRepositoryNotFoundException;
 import pl.edu.tirex.github.exception.GithubUserNotFoundException;
+import pl.edu.tirex.http.exception.HttpResponseCodeException;
 
 @ControllerAdvice
 public class ExceptionsHandler
 {
     @ExceptionHandler(GithubUserNotFoundException.class)
-    public ResponseEntity userNotFoundException()
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void userNotFoundException()
     {
-        return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(GithubRepositoryNotFoundException.class)
-    public ResponseEntity repositoryNotFoundException()
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void repositoryNotFoundException()
     {
-        return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(HttpResponseCodeException.class)
+    public ResponseEntity responseCodeException(HttpResponseCodeException e)
+    {
+        return ResponseEntity.status(e.getResponseCode()).build();
     }
 
     @ExceptionHandler(Throwable.class)
-    public ResponseEntity otherException()
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public void otherException(Throwable throwable)
     {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        throwable.printStackTrace();
     }
 }

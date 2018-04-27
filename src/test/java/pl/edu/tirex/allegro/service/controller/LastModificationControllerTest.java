@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class LastModificationControllerTest
 {
-    private static final String LAST_MODIFICATION_URL = "/last-modification";
+    private static final String LAST_MODIFICATION_URL = "/api/last-modification";
 
     private MockMvc mockMvc;
 
@@ -28,8 +28,7 @@ public class LastModificationControllerTest
     {
         this.lastModificationController = Mockito.mock(LastModificationController.class);
 
-        this.mockMvc = MockMvcBuilders.standaloneSetup(this.lastModificationController)
-                                      .setControllerAdvice(new ExceptionsHandler()).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(this.lastModificationController).build();
     }
 
     @Test
@@ -43,42 +42,6 @@ public class LastModificationControllerTest
                     .andExpect(status().isOk())
                     .andExpect(content().string("test_name"))
                     .andExpect(content().contentTypeCompatibleWith(TEXT_PLAIN));
-        //@formatter:on
-    }
-
-    @Test
-    @DisplayName("throw GithubUserNotFoundException")
-    public void lastModificationThrowUserNotFoundExceptionTest() throws Exception
-    {
-        given(this.lastModificationController.lastModification()).willThrow(GithubUserNotFoundException.class);
-
-        //@formatter:off
-        this.mockMvc.perform(get(LAST_MODIFICATION_URL))
-                    .andExpect(status().is4xxClientError());
-        //@formatter:on
-    }
-
-    @Test
-    @DisplayName("throw GithubRepositoryNotFoundException")
-    public void lastModificationThrowRepositoryNotFoundExceptionTest() throws Exception
-    {
-        given(this.lastModificationController.lastModification()).willThrow(GithubRepositoryNotFoundException.class);
-
-        //@formatter:off
-        this.mockMvc.perform(get(LAST_MODIFICATION_URL))
-                    .andExpect(status().is4xxClientError());
-        //@formatter:on
-    }
-
-    @Test
-    @DisplayName("throw Internal Server Error")
-    public void lastModificationThrowAnyExceptionTest() throws Exception
-    {
-        given(this.lastModificationController.lastModification()).willThrow(Error.class);
-
-        //@formatter:off
-        this.mockMvc.perform(get(LAST_MODIFICATION_URL))
-                    .andExpect(status().is5xxServerError());
         //@formatter:on
     }
 }

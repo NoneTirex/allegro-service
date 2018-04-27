@@ -16,7 +16,7 @@ public class LastModificationController
         this.githubService = githubService;
     }
 
-    @GetMapping("/last-modification")
+    @GetMapping("/api/last-modification")
     public String lastModification()
     {
         return this.githubService.getLastModificationRepositoryName("allegro");
