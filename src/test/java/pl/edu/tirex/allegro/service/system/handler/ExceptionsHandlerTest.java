@@ -61,7 +61,7 @@ public class ExceptionsHandlerTest
     @DisplayName("handle Internal Server Error")
     public void exceptionHandlerHandleAnyExceptionTest() throws Exception
     {
-        given(this.exceptionHandlerController.test()).willThrow(Error.class);
+        given(this.exceptionHandlerController.test()).willThrow(RuntimeException.class);
 
         //@formatter:off
         this.mockMvc.perform(get(EXCEPTION_HANDLER_URL))

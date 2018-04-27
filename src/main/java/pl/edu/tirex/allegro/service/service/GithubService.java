@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.edu.tirex.allegro.service.ApplicationConfiguration;
 import pl.edu.tirex.github.GithubRepository;
 import pl.edu.tirex.github.exception.GithubRepositoryNotFoundException;
 import pl.edu.tirex.github.exception.GithubUserNotFoundException;
@@ -20,11 +21,13 @@ import java.util.List;
 public class GithubService
 {
     private final Gson gson;
+    private final ApplicationConfiguration configuration;
 
     @Autowired
-    public GithubService(Gson gson)
+    public GithubService(Gson gson, ApplicationConfiguration configuration)
     {
         this.gson = gson;
+        this.configuration = configuration;
     }
 
     public String getLastModificationRepositoryName(String user)
@@ -53,6 +56,11 @@ public class GithubService
         httpConnection.setUrlParameter("sort", "updated");
         httpConnection.setUrlParameter("direction", "desc");
         httpConnection.setHeader("Accept", "application/vnd.github.v3+json");
+        String oAuthToken = this.configuration.getGithub().getOauthToken();
+        if (oAuthToken != null)
+        {
+            httpConnection.setHeader("Authorization", "token " + oAuthToken);
+        }
         try
         {
             return httpConnection.execute(new JsonTypeResolver<>(this.gson, new TypeToken<ArrayList<GithubRepository>>()
