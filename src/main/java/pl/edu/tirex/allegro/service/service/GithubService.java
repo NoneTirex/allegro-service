@@ -7,12 +7,13 @@ import org.springframework.stereotype.Service;
 import pl.edu.tirex.github.GithubRepository;
 import pl.edu.tirex.github.exception.GithubRepositoryNotFoundException;
 import pl.edu.tirex.github.exception.GithubUserNotFoundException;
+import pl.edu.tirex.http.HttpConnection;
+import pl.edu.tirex.http.exception.HttpResponseCodeException;
+import pl.edu.tirex.http.resolver.JsonTypeResolver;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -48,34 +49,28 @@ public class GithubService
 
     public List<GithubRepository> getRepositories(String user)
     {
+        HttpConnection httpConnection = new HttpConnection("https://api.github.com/users/" + user + "/repos");
+        httpConnection.setUrlParameter("sort", "updated");
+        httpConnection.setUrlParameter("direction", "desc");
+        httpConnection.setHeader("Accept", "application/vnd.github.v3+json");
         try
         {
-            HttpURLConnection httpConnection = (HttpURLConnection) new URL(
-                    "https://api.github.com/users/" + user + "/repos?sort=updated&direction=desc").openConnection();
-            httpConnection.setRequestProperty("Accept", "application/vnd.github.v3+json");
-
-            httpConnection.setConnectTimeout(10000); //TODO add configuration in application.properties
-            httpConnection.setReadTimeout(10000); // TODO look above
-
-            httpConnection.setRequestMethod("GET");
-
-            int responseCode = httpConnection.getResponseCode();
-            if (responseCode == 404)
+            return httpConnection.execute(new JsonTypeResolver<>(this.gson, new TypeToken<ArrayList<GithubRepository>>()
+            {
+            }.getType()));
+        }
+        catch (HttpResponseCodeException e)
+        {
+            if (e.getResponseCode() == 404)
             {
                 throw new GithubUserNotFoundException("User with name: " + user + " was not found.");
             }
-
-            return this.gson.fromJson(new InputStreamReader(httpConnection.getInputStream()),
-                    new TypeToken<ArrayList<GithubRepository>>()
-                    {
-                    }.getType());
         }
         catch (IOException e)
         {
-            // TODO jakis blad, trzbea przetworzyc
             e.printStackTrace();
         }
-        return null;
+        return Collections.emptyList();
     }
 
 
