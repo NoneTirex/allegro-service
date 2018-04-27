@@ -18,10 +18,16 @@ public class HttpConnectionTest
     @Test
     public void separationUrlFromParametersTest()
     {
-        assertEquals("https://github.com/?test1=abc&test2=&test3", this.httpConnection.getUrl());
-        assertEquals("https://github.com/", this.httpConnection.getShortUrl());
-        assertTrue(this.httpConnection.getUrlParameters().containsKey("test1"));
-        assertTrue(this.httpConnection.getUrlParameters().containsKey("test2"));
-        assertTrue(this.httpConnection.getUrlParameters().containsKey("test3"));
+        assertAll(() ->
+        {
+            assertEquals("https://github.com/?test1=abc&test2=&test3", this.httpConnection.getUrl());
+            assertEquals("https://github.com/", this.httpConnection.getShortUrl());
+        });
+        assertAll(() ->
+        {
+            assertTrue(this.httpConnection.getUrlParameters().containsKey("test1"));
+            assertTrue(this.httpConnection.getUrlParameters().containsKey("test2"));
+            assertTrue(this.httpConnection.getUrlParameters().containsKey("test3"));
+        });
     }
 }
