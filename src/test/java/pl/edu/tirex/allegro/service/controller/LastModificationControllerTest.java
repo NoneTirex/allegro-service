@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import pl.edu.tirex.allegro.service.system.handler.ExceptionsHandler;
-import pl.edu.tirex.github.exception.GithubRepositoryNotFoundException;
-import pl.edu.tirex.github.exception.GithubUserNotFoundException;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.http.MediaType.*;
