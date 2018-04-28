@@ -9,6 +9,12 @@ public class HttpResponseCodeException extends RuntimeException
         this.responseCode = responseCode;
     }
 
+    public HttpResponseCodeException(String message, int responseCode)
+    {
+        super(message);
+        this.responseCode = responseCode;
+    }
+
     public int getResponseCode()
     {
         return responseCode;

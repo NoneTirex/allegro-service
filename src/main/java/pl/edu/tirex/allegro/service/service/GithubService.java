@@ -53,7 +53,7 @@ public class GithubService
     public List<GithubRepository> getRepositories(String user)
     {
         HttpConnection httpConnection = new HttpConnection("https://api.github.com/users/" + user + "/repos");
-        httpConnection.setUrlParameter("sort", "updated");
+        httpConnection.setUrlParameter("sort", "pushed");
         httpConnection.setUrlParameter("direction", "desc");
         httpConnection.setHeader("Accept", "application/vnd.github.v3+json");
         String oAuthToken = this.configuration.getGithub().getOauthToken();
@@ -73,7 +73,7 @@ public class GithubService
             {
                 throw new GithubUserNotFoundException("User with name: " + user + " was not found.");
             }
-            throw e;
+            throw new HttpResponseCodeException("Github API failed status code: " + e.getResponseCode(), e.getResponseCode());
         }
         catch (IOException e)
         {

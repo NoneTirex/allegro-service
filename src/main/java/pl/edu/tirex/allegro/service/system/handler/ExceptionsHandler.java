@@ -27,7 +27,8 @@ public class ExceptionsHandler
     @ExceptionHandler(HttpResponseCodeException.class)
     public ResponseEntity responseCodeException(HttpResponseCodeException e)
     {
-        return ResponseEntity.status(e.getResponseCode()).build();
+        e.printStackTrace();
+        return ResponseEntity.status(e.getResponseCode()).body(e.getMessage());
     }
 
     @ExceptionHandler(Throwable.class)
