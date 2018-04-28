@@ -23,8 +23,8 @@ Użycie klucza OAuth2 jest opcjonalne. Zostało stworzone na potrzeby bardziej w
 Aplikacja domyślnie jest otwarta na porcie `8080`
 
 Aplikacja umożliwia:
-  + Wyświetlenie statusu API: `/api/status`
-  + Pobranie ostatnio aktualizowanego repozytorium: `/api/last-modification`
+  + `/api/status` - Wyświetlenie statusu API.
+  + `/api/last-modification` - Pobranie nazwy repozytorium, który kod był ostatnio modyfikowany
 
 Uruchomienie testów
 ------------
